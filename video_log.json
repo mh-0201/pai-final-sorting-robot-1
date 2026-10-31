@@ -1,0 +1,157 @@
+[
+  {
+    "time": 0.5,
+    "kind": "scene",
+    "title": "場面1: 基本の仕分け"
+  },
+  {
+    "time": 1.5,
+    "kind": "instruction",
+    "text": "赤いブロックを黄色いトレイに入れて",
+    "reply": "赤いブロックを左のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "red",
+        "tray": "left"
+      }
+    ]
+  },
+  {
+    "time": 2.7,
+    "kind": "action",
+    "cube": "red",
+    "tray": "left"
+  },
+  {
+    "time": 11.5,
+    "kind": "result",
+    "cube": "red",
+    "tray": "left",
+    "ok": true
+  },
+  {
+    "time": 12.5,
+    "kind": "instruction",
+    "text": "紫のブロックも片付けて",
+    "reply": "紫のブロックはありません。",
+    "actions": []
+  },
+  {
+    "time": 14.7,
+    "kind": "instruction",
+    "text": "残りは全部、右のトレイにお願い",
+    "reply": "残りの緑と青のブロックを右のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "green",
+        "tray": "right"
+      },
+      {
+        "cube": "blue",
+        "tray": "right"
+      }
+    ]
+  },
+  {
+    "time": 15.9,
+    "kind": "action",
+    "cube": "green",
+    "tray": "right"
+  },
+  {
+    "time": 24.7,
+    "kind": "result",
+    "cube": "green",
+    "tray": "right",
+    "ok": true
+  },
+  {
+    "time": 24.7,
+    "kind": "action",
+    "cube": "blue",
+    "tray": "right"
+  },
+  {
+    "time": 33.5,
+    "kind": "result",
+    "cube": "blue",
+    "tray": "right",
+    "ok": true
+  },
+  {
+    "time": 35.0,
+    "kind": "scene",
+    "title": "場面2: 配置を変えて、順番つきの指示"
+  },
+  {
+    "time": 36.0,
+    "kind": "instruction",
+    "text": "まず青を左に、そのあと緑も左に置いて",
+    "reply": "青と緑のブロックを左のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "blue",
+        "tray": "left"
+      },
+      {
+        "cube": "green",
+        "tray": "left"
+      }
+    ]
+  },
+  {
+    "time": 37.2,
+    "kind": "action",
+    "cube": "blue",
+    "tray": "left"
+  },
+  {
+    "time": 46.0,
+    "kind": "result",
+    "cube": "blue",
+    "tray": "left",
+    "ok": true
+  },
+  {
+    "time": 46.0,
+    "kind": "action",
+    "cube": "green",
+    "tray": "left"
+  },
+  {
+    "time": 54.8,
+    "kind": "result",
+    "cube": "green",
+    "tray": "left",
+    "ok": true
+  },
+  {
+    "time": 55.8,
+    "kind": "instruction",
+    "text": "赤は白いトレイへ",
+    "reply": "赤いブロックを右のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "red",
+        "tray": "right"
+      }
+    ]
+  },
+  {
+    "time": 57.0,
+    "kind": "action",
+    "cube": "red",
+    "tray": "right"
+  },
+  {
+    "time": 65.8,
+    "kind": "result",
+    "cube": "red",
+    "tray": "right",
+    "ok": true
+  },
+  {
+    "time": 66.8,
+    "kind": "end"
+  }
+]

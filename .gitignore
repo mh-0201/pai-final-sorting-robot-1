@@ -1,0 +1,13 @@
+# Python環境（`uv sync` で作り直せる）
+.venv/
+__pycache__/
+
+# 動画（YouTubeで提出するため、リポジトリには入れない）
+*.mp4
+
+# 講座の資料・Macのファイル
+*.pdf
+.DS_Store
+
+# 古いレイアウトで作った途中の記録
+step4_log.json
