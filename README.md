@@ -4,7 +4,7 @@
 ロボットアーム（Franka Emika Panda）が**声で返事をしてから**、色ブロックをトレイへ仕分けたり、積み上げたりするシミュレーションです。
 Physical AI 応用1講座 最終課題として作成しました。
 
-- デモ動画: （YouTubeのURLをここに書く）　2分35秒・等倍速・音声あり
+- デモ動画: https://youtu.be/kmhiy8c1s0E　2分35秒・等倍速・音声あり
 - シミュレータ: [Genesis](https://github.com/Genesis-Embodied-AI/Genesis) 1.4.5
 - AI: [Ollama](https://ollama.com/) + qwen2.5:3b（推論のみ、学習なし）
 - 音声: macOS の読み上げ機能（`say` コマンド）
