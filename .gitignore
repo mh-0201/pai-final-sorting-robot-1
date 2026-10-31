@@ -11,3 +11,11 @@ __pycache__/
 
 # 古いレイアウトで作った途中の記録
 step4_log.json
+
+# v2 で作られる中間ファイル（make_video.py を実行すると作り直される）
+v2_voice_stack/voices/
+v2_voice_stack/make_video.log
+*.textClipping
+*.jpg
+!report/images/*.jpg
+!v2_voice_stack/report/images/*.jpg

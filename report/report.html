@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ことばで指示する仕分けロボット｜PAI最終課題 説明資料</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 16mm 16mm; }
+  :root { --ink: #1d2433; --sub: #5a6478; --line: #d9dee8; --accent: #2f6fdb; --soft: #f3f6fb; }
+  body { font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; color: var(--ink);
+         font-size: 10pt; line-height: 1.7; margin: 0; background: #fff; }
+  h1 { font-size: 20pt; margin: 0 0 2mm; line-height: 1.3; }
+  .lead { color: var(--sub); margin: 0 0 4mm; }
+  h2 { font-size: 13pt; border-left: 4px solid var(--accent); padding-left: 3mm; margin: 7mm 0 2.5mm; break-after: avoid; }
+  h3 { font-size: 10.5pt; margin: 4mm 0 1mm; break-after: avoid; }
+  p { margin: 0 0 2mm; }
+  ul, ol { margin: 0 0 2mm; padding-left: 6mm; }
+  li { margin-bottom: 1mm; }
+  table { border-collapse: collapse; width: 100%; margin: 1mm 0 3mm; font-size: 9pt; break-inside: avoid; }
+  th, td { border: 1px solid var(--line); padding: 1.5mm 2.5mm; text-align: left; vertical-align: top; }
+  th { background: var(--soft); white-space: nowrap; }
+  code { font-family: Menlo, monospace; font-size: 8.5pt; background: var(--soft); padding: 0 1mm; border-radius: 2px; }
+  pre { font-family: Menlo, monospace; font-size: 8.3pt; background: var(--soft); padding: 2.5mm 3mm;
+        border-radius: 3px; margin: 1mm 0 3mm; white-space: pre-wrap; break-inside: avoid; line-height: 1.5; }
+  .meta { display: grid; grid-template-columns: auto 1fr; gap: 0.5mm 4mm; font-size: 9pt; background: var(--soft);
+          padding: 3mm 4mm; border-radius: 3px; }
+  .meta b { color: var(--sub); font-weight: 600; }
+  .flow { display: flex; align-items: stretch; gap: 1.5mm; margin: 2mm 0 3mm; break-inside: avoid; }
+  .flow div { flex: 1; border: 1px solid var(--line); border-radius: 3px; padding: 2mm; font-size: 8.5pt; text-align: center; }
+  .flow div b { display: block; font-size: 9pt; margin-bottom: 0.5mm; }
+  .flow .arrow { flex: 0 0 auto; border: none; padding: 0; align-self: center; color: var(--sub); }
+  .ai { background: #eef4ff; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin: 2mm 0 3mm; }
+  figure { margin: 0; break-inside: avoid; }
+  figure img { width: 100%; border-radius: 2px; display: block; }
+  figcaption { font-size: 8.5pt; color: var(--sub); margin-top: 1mm; }
+  .note { font-size: 8.5pt; color: var(--sub); }
+</style>
+</head>
+<body>
+
+<h1>ことばで指示する仕分けロボット</h1>
+<p class="lead">日本語の指示をローカルの言語モデルがロボットの命令に変換し、ロボットアームが色ブロックを仕分ける</p>
+
+<div class="meta">
+  <b>講座</b><span>Physical AI 応用1講座 最終課題</span>
+  <b>動画</b><span>（YouTubeのURL）　84秒・等倍速</span>
+  <b>コード</b><span>https://github.com/mh-0201/pai-final-sorting-robot-1</span>
+  <b>使用技術</b><span>Genesis 1.4.5（シミュレータ）／ Franka Emika Panda ／ Ollama + qwen2.5:3b（言語モデル、推論のみ）／ Python 3.11</span>
+</div>
+
+<h2>1. 概要と目的</h2>
+<p>
+ロボットに作業を頼むとき、現場の人がプログラムを書いたり座標を指定したりするのは大変です。
+そこで本課題では、<b>「赤いブロックを黄色いトレイに入れて」のような普段の言葉で指示するだけで、ロボットアームが動く仕組み</b>を作りました。
+物流倉庫での荷物の仕分けや、家庭での片付けを手伝うロボットを、小さな形で再現することを目指しています。
+</p>
+<p>
+AIの役割は、あいまいな日本語の指示を、ロボットが実行できる正確な命令に「翻訳」することです。
+言語モデルはクラウドではなく <b>Mac上でローカルに動かして</b>おり、インターネット接続やAPIキーがなくても動作します。
+</p>
+
+<h2>2. システム構成</h2>
+<div class="flow">
+  <div><b>① 日本語の指示</b>「残りは全部、<br>右のトレイにお願い」</div>
+  <div class="arrow">▶</div>
+  <div class="ai"><b>② 言語モデル（AI）</b>qwen2.5:3b<br>指示を命令の列に変換</div>
+  <div class="arrow">▶</div>
+  <div><b>③ 命令（JSON）</b>緑→右、青→右</div>
+  <div class="arrow">▶</div>
+  <div><b>④ 逆運動学（IK）</b>手先の位置から<br>関節角度を逆算</div>
+  <div class="arrow">▶</div>
+  <div><b>⑤ 動作</b>つかむ→運ぶ<br>→置く→確認</div>
+</div>
+
+<table>
+  <tr><th>ファイル</th><th>役割</th></tr>
+  <tr><td><code>ai_planner.py</code></td><td>指示文と「まだ仕分けていないブロック」を言語モデルに渡し、命令（JSON）と返事の文を受け取る</td></tr>
+  <tr><td><code>robot.py</code></td><td>シーン（アーム・色ブロック3個・トレイ2枚・カメラ）の作成と、ピック＆プレース動作</td></tr>
+  <tr><td><code>make_video.py</code></td><td>2つの場面を録画し、タイトル・字幕・結果を付けて提出用の動画にまとめる</td></tr>
+  <tr><td><code>test_planner.py</code></td><td>いろいろな言い回しで、AIの変換が正しいかを確かめるテスト</td></tr>
+</table>
+
+<h3>AIの部分：指示を命令に変換する</h3>
+<p>言語モデルには、使えるブロックとトレイ、ルール、例を伝えたうえで、次の形のJSONだけを出力させます。</p>
+<pre>指示「残りは全部、右のトレイにお願い」（未仕分け: 緑・青）
+→ {"actions": [{"cube": "green", "tray": "right"}, {"cube": "blue", "tray": "right"}],
+   "reply": "残りの緑と青のブロックを右のトレイに入れます。"}</pre>
+
+<h3>ロボットの部分：つかむ→運ぶ→置く</h3>
+<p>
+命令を受け取ると、ブロックの現在位置を読み取り、手先を「真上 → つかむ高さ → 持ち上げ → トレイの上 → 置く高さ」と順に動かします。
+各目標位置への関節角度は Genesis の逆運動学（IK）で計算し、今の角度から目標の角度へ、動き始めと終わりがゆっくりになるように補間して滑らかに動かしています。
+最後に、ブロックがトレイの上にあるかを自動で判定します。
+</p>
+
+<h2>3. 工夫した点</h2>
+<ol>
+  <li><b>AIが「できない命令」を出せないようにした</b>：Ollama の structured outputs 機能で出力の形（JSON Schema）を固定し、色は red/green/blue、トレイは left/right しか選べないようにしました。さらにプログラム側でも再チェックし、ロボットが実行できない命令は取り除きます。</li>
+  <li><b>無い物や関係のない指示には、動かずに理由を返す</b>：「紫のブロックも片付けて」には「紫のブロックはありません」と返して動きません。間違った物を動かさないことは、実際の現場では特に大切だと考えました。</li>
+  <li><b>状況に合わせた解釈</b>：まだ仕分けていないブロックをAIに伝えることで、「残りは全部」が「今残っている緑と青」と正しく解釈されます。「まず青を左に、そのあと緑も」のような順番つきの指示にも対応しています。</li>
+  <li><b>左右を「指示する人」の目線で定義した</b>：最初はロボットから見た左右にしていましたが、正面から撮った映像では左右が逆に映り、見る人が混乱しました。ロボットの正面に立って指示する人から見た左右に定義し直したことで、画面の左右と一致し、指示する人にとっても自然になりました。</li>
+  <li><b>確実につかむための調整</b>：つかんでいる間は指に内向きの力をかけ続けて、運ぶ途中で落とさないようにしました。また、同じトレイに2個目を置くときは位置をずらし、ブロックが重ならないようにしました。</li>
+  <li><b>見てわかる動画</b>：字幕で「指示」「AIの返事」「AIが作った命令（実行中は▶、完了は✓）」を同時に表示し、AIの判断とロボットの動作の対応が一目でわかるようにしました。カメラの位置は何案か比べ、ロボット全体とブロックが字幕に隠れずに見える位置を選びました。</li>
+</ol>
+
+<h2>4. 結果</h2>
+<table>
+  <tr><th>評価</th><th>結果</th></tr>
+  <tr><td>指示の変換テスト（言い回しを変えた8通り）</td><td><b>8 / 8 正解</b>（「青いのを黄色い皿に置いてください」「全部右のトレイに片付けて」「今日の天気は？」など）。1回の変換は約1〜3秒</td></tr>
+  <tr><td>デモ動画での仕分け（2場面・5つの指示）</td><td><b>6 / 6 回成功</b>。紫のブロックの指示には動かずに返答</td></tr>
+  <tr><td>手先の位置の精度（IK）</td><td>目標との誤差は最大 7.6 mm（4 cm のブロックをつかむには十分）</td></tr>
+  <tr><td>1回の仕分けにかかる時間</td><td>シミュレーション内で約 9 秒</td></tr>
+</table>
+
+<div class="grid">
+  <figure><img src="images/pick.jpg"><figcaption>図1　「赤いブロックを黄色いトレイに入れて」：赤をつかんで運ぶ</figcaption></figure>
+  <figure><img src="images/refuse.jpg"><figcaption>図2　「紫のブロックも片付けて」：存在しないので動かずに返答</figcaption></figure>
+  <figure><img src="images/scene1_done.jpg"><figcaption>図3　「残りは全部、右のトレイにお願い」：緑と青を順に仕分け完了</figcaption></figure>
+  <figure><img src="images/scene2.jpg"><figcaption>図4　配置を変えた場面2：「まず青を左に、そのあと緑も左に」</figcaption></figure>
+</div>
+
+<h2>5. 苦労した点と対処</h2>
+<ul>
+  <li><b>環境構築</b>：以前入れていた Anaconda が Intel Mac 用で、M1 Mac では起動しませんでした。M1 に対応した Python 管理ツール uv で環境を作り直しました。ROS2 + Gazebo は M1 Mac では仮想環境が必要になるため、pip でそのまま入る Genesis を選びました。</li>
+  <li><b>ライブラリの変更</b>：Genesis の最新版では、録画の保存方法など、参考にした記事と書き方が変わっている部分がありました。関数の定義を直接調べて対応しました。</li>
+  <li><b>AIの返事に英語が混ざる</b>：「残りのgreenとblue」のように英語が混ざることがあったため、AIへの指示文に「色は日本語で書く」ルールを追加し、渡す情報にも日本語名を付けました。</li>
+</ul>
+
+<h2>6. 限界と今後の展望</h2>
+<ul>
+  <li><b>ブロックの位置を「見て」いない</b>：現在はシミュレータから位置を直接読み取っています。カメラ画像から物体検出や視覚言語モデルで位置と色を認識できれば、実機にも近づきます。</li>
+  <li><b>指示できる動作が「置く」だけ</b>：「積み上げて」「並べて」など、動作の種類を増やしたいです。</li>
+  <li><b>小さな言語モデルの限界</b>：3B（30億パラメータ）の小さなモデルのため、より複雑な指示では誤解する可能性があります。テストの例を増やして弱点を調べることが次の課題です。</li>
+  <li><b>実機での検証</b>：SO-101 などの安価なロボットアームで同じ仕組みを試したいです。</li>
+</ul>
+
+<p class="note">※ 開発にあたっては、環境構築やコードの作成にAIアシスタント（Claude Code）の支援を受けました。設計の判断・動作の確認・動画の構成は、自分で確かめながら進めています。</p>
+
+</body>
+</html>

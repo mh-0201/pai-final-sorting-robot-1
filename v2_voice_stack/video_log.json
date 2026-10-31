@@ -1,0 +1,254 @@
+[
+  {
+    "time": 0.5,
+    "kind": "scene",
+    "title": "場面1: 基本の仕分け"
+  },
+  {
+    "time": 1.5,
+    "kind": "instruction",
+    "text": "赤いブロックを黄色いトレイに入れて",
+    "voice": "voices/01_human.wav"
+  },
+  {
+    "time": 4.69,
+    "kind": "reply",
+    "reply": "赤いブロックを左のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "red",
+        "place": "left"
+      }
+    ],
+    "voice": "voices/01_robot.wav"
+  },
+  {
+    "time": 8.27,
+    "kind": "action",
+    "cube": "red",
+    "place": "left"
+  },
+  {
+    "time": 17.07,
+    "kind": "result",
+    "cube": "red",
+    "place": "left",
+    "ok": true
+  },
+  {
+    "time": 18.07,
+    "kind": "instruction",
+    "text": "紫のブロックも片付けて",
+    "voice": "voices/02_human.wav"
+  },
+  {
+    "time": 21.01,
+    "kind": "reply",
+    "reply": "紫のブロックはありません。",
+    "actions": [],
+    "voice": "voices/02_robot.wav"
+  },
+  {
+    "time": 25.12,
+    "kind": "instruction",
+    "text": "残りは全部、右のトレイにお願い",
+    "voice": "voices/03_human.wav"
+  },
+  {
+    "time": 28.55,
+    "kind": "reply",
+    "reply": "残りの緑と青のブロックを右のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "green",
+        "place": "right"
+      },
+      {
+        "cube": "blue",
+        "place": "right"
+      }
+    ],
+    "voice": "voices/03_robot.wav"
+  },
+  {
+    "time": 33.48,
+    "kind": "action",
+    "cube": "green",
+    "place": "right"
+  },
+  {
+    "time": 42.28,
+    "kind": "result",
+    "cube": "green",
+    "place": "right",
+    "ok": true
+  },
+  {
+    "time": 42.28,
+    "kind": "action",
+    "cube": "blue",
+    "place": "right"
+  },
+  {
+    "time": 51.08,
+    "kind": "result",
+    "cube": "blue",
+    "place": "right",
+    "ok": true
+  },
+  {
+    "time": 52.58,
+    "kind": "scene",
+    "title": "場面2: 配置を変えて、順番つきの指示"
+  },
+  {
+    "time": 53.58,
+    "kind": "instruction",
+    "text": "まず青を左に、そのあと緑も左に置いて",
+    "voice": "voices/04_human.wav"
+  },
+  {
+    "time": 57.81,
+    "kind": "reply",
+    "reply": "青と緑のブロックを左のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "blue",
+        "place": "left"
+      },
+      {
+        "cube": "green",
+        "place": "left"
+      }
+    ],
+    "voice": "voices/04_robot.wav"
+  },
+  {
+    "time": 61.95,
+    "kind": "action",
+    "cube": "blue",
+    "place": "left"
+  },
+  {
+    "time": 70.75,
+    "kind": "result",
+    "cube": "blue",
+    "place": "left",
+    "ok": true
+  },
+  {
+    "time": 70.75,
+    "kind": "action",
+    "cube": "green",
+    "place": "left"
+  },
+  {
+    "time": 79.55,
+    "kind": "result",
+    "cube": "green",
+    "place": "left",
+    "ok": true
+  },
+  {
+    "time": 80.55,
+    "kind": "instruction",
+    "text": "赤は白いトレイへ",
+    "voice": "voices/05_human.wav"
+  },
+  {
+    "time": 82.5,
+    "kind": "reply",
+    "reply": "赤いブロックを右のトレイに入れます。",
+    "actions": [
+      {
+        "cube": "red",
+        "place": "right"
+      }
+    ],
+    "voice": "voices/05_robot.wav"
+  },
+  {
+    "time": 85.99,
+    "kind": "action",
+    "cube": "red",
+    "place": "right"
+  },
+  {
+    "time": 94.79,
+    "kind": "result",
+    "cube": "red",
+    "place": "right",
+    "ok": true
+  },
+  {
+    "time": 96.29,
+    "kind": "scene",
+    "title": "場面3: 積み上げ"
+  },
+  {
+    "time": 97.29,
+    "kind": "instruction",
+    "text": "赤いブロックを青の上に積んで",
+    "voice": "voices/06_human.wav"
+  },
+  {
+    "time": 100.32,
+    "kind": "reply",
+    "reply": "赤いブロックを青のブロックの上に積みます。",
+    "actions": [
+      {
+        "cube": "red",
+        "place": "blue"
+      }
+    ],
+    "voice": "voices/06_robot.wav"
+  },
+  {
+    "time": 104.29,
+    "kind": "action",
+    "cube": "red",
+    "place": "blue"
+  },
+  {
+    "time": 113.49,
+    "kind": "result",
+    "cube": "red",
+    "place": "blue",
+    "ok": true
+  },
+  {
+    "time": 114.49,
+    "kind": "instruction",
+    "text": "その上に、緑ものせてください",
+    "voice": "voices/07_human.wav"
+  },
+  {
+    "time": 117.65,
+    "kind": "reply",
+    "reply": "緑のブロックを赤いブロックの上にのせます。",
+    "actions": [
+      {
+        "cube": "green",
+        "place": "red"
+      }
+    ],
+    "voice": "voices/07_robot.wav"
+  },
+  {
+    "time": 121.76,
+    "kind": "action",
+    "cube": "green",
+    "place": "red"
+  },
+  {
+    "time": 130.96,
+    "kind": "result",
+    "cube": "green",
+    "place": "red",
+    "ok": true
+  },
+  {
+    "time": 131.96,
+    "kind": "end"
+  }
+]
